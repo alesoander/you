@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Una experiencia interactiva y romántica con carta y música." />
+  <title>Para Ti ❤️</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- ===================== SCREEN 1 – INTRO ===================== -->
+  <section
+    id="screen-intro"
+    class="screen screen-intro is-active"
+    role="main"
+    aria-label="Pantalla de inicio"
+  >
+    <div class="intro-particles" id="intro-particles" aria-hidden="true"></div>
+    <div class="intro-glow" aria-hidden="true"></div>
+
+    <div class="intro-content">
+      <p class="intro-message">Hay algo que quiero mostrarte ❤️</p>
+
+      <button
+        id="btn-start"
+        class="heart-btn"
+        aria-label="Comenzar la experiencia"
+      >
+        <svg
+          class="heart-btn-svg"
+          viewBox="0 0 100 90"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M50 82
+               C22 63, 5 48, 5 30
+               C5 16, 16 6, 30 6
+               C38 6, 45.5 10.5, 50 17
+               C54.5 10.5, 62 6, 70 6
+               C84 6, 95 16, 95 30
+               C95 48, 78 63, 50 82 Z"
+          />
+        </svg>
+        <span class="heart-btn-label">Comenzar</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- =================== TRANSITION OVERLAY ==================== -->
+  <div
+    id="transition-overlay"
+    class="transition-overlay is-hidden"
+    aria-hidden="true"
+  >
+    <!-- Expanding heart (phase 1) -->
+    <div id="tx-heart" class="tx-heart">
+      <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M50 82
+             C22 63, 5 48, 5 30
+             C5 16, 16 6, 30 6
+             C38 6, 45.5 10.5, 50 17
+             C54.5 10.5, 62 6, 70 6
+             C84 6, 95 16, 95 30
+             C95 48, 78 63, 50 82 Z"
+        />
+      </svg>
+    </div>
+
+    <!-- Envelope (phase 2) -->
+    <div id="envelope-wrapper" class="envelope-wrapper is-hidden">
+      <div id="envelope" class="envelope">
+        <!-- Diagonal fold lines on the envelope body -->
+        <div class="env-body">
+          <div class="env-fold-left"></div>
+          <div class="env-fold-right"></div>
+          <!-- Letter rising from envelope -->
+          <div id="letter-inside" class="letter-inside">
+            <div class="li-line"></div>
+            <div class="li-line li-line--short"></div>
+            <div class="li-line"></div>
+            <div class="li-line li-line--short"></div>
+            <div class="li-line"></div>
+          </div>
+        </div>
+        <!-- Flap that opens -->
+        <div id="env-flap" class="env-flap"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== SCREEN 2 – LETTER ==================== -->
+  <section
+    id="screen-letter"
+    class="screen screen-letter is-hidden"
+    role="main"
+    aria-label="Carta de amor"
+  >
+    <!-- Dynamic background -->
+    <div class="bg-scene" aria-hidden="true">
+      <div class="bg-gradient-anim"></div>
+      <div id="bg-particles" class="bg-particles"></div>
+      <div id="effects-layer" class="effects-layer"></div>
+    </div>
+
+    <!-- Letter paper -->
+    <div class="letter-wrapper">
+      <article id="letter-paper" class="letter-paper" tabindex="0">
+        <div id="letter-content" class="letter-content">
+          <!-- Populated by app.js from data/letter.js -->
+        </div>
+      </article>
+    </div>
+
+    <!-- Controls -->
+    <nav class="controls" role="navigation" aria-label="Controles de experiencia">
+      <button
+        id="btn-music"
+        class="ctrl-btn"
+        aria-label="Reproducir o pausar música"
+        title="Música"
+      >
+        <span id="music-icon" class="ctrl-icon" aria-hidden="true">⏸</span>
+      </button>
+      <button
+        id="btn-restart"
+        class="ctrl-btn"
+        aria-label="Reiniciar experiencia"
+        title="Reiniciar"
+      >
+        <span class="ctrl-icon" aria-hidden="true">↺</span>
+      </button>
+      <button
+        id="btn-fullscreen"
+        class="ctrl-btn"
+        aria-label="Activar o desactivar pantalla completa"
+        title="Pantalla completa"
+      >
+        <span id="fullscreen-icon" class="ctrl-icon" aria-hidden="true">⛶</span>
+      </button>
+    </nav>
+
+    <!-- Notice shown when audio file is missing -->
+    <div id="audio-notice" class="audio-notice is-hidden" role="alert">
+      🎵 Agrega la canción en <code>assets/audio/song.mp3</code> para activar la música.
+    </div>
+  </section>
+
+  <!-- ======================== AUDIO ========================== -->
+  <audio id="bg-music" preload="auto">
+    <source src="assets/audio/song.mp3" type="audio/mpeg" />
+    <source src="assets/audio/song.ogg" type="audio/ogg" />
+  </audio>
+
+  <!-- ======================== SCRIPTS ========================= -->
+  <script src="data/letter.js"></script>
+  <script src="js/animation-engine.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/song-events.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

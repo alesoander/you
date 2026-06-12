@@ -1,0 +1,580 @@
+/* =============================================================
+   styles.css – Main stylesheet
+   Interactive Love Letter Experience
+   ============================================================= */
+
+/* ── CSS Custom Properties ─────────────────────────────────── */
+:root {
+  /* Colours */
+  --c-night:          #0d0815;
+  --c-deep-purple:    #1a0a2e;
+  --c-midnight:       #0d1b2a;
+  --c-rose:           #e8a0b0;
+  --c-rose-light:     #f4c0d0;
+  --c-rose-glow:      rgba(232, 160, 176, 0.55);
+  --c-gold:           #d4af7a;
+  --c-gold-soft:      #e8c89a;
+  --c-cream:          #fdf6e3;
+  --c-cream-warm:     #fef9ef;
+  --c-lavender:       #b39ddb;
+  --c-lavender-light: #d1c4e9;
+  --c-white-warm:     #fff8f0;
+  --c-text-dark:      #3a2a1a;
+  --c-text-mid:       #7a5a3a;
+
+  /* Typography */
+  --f-letter:  'Dancing Script', cursive;
+  --f-display: 'Playfair Display', serif;
+  --f-body:    'Lato', sans-serif;
+
+  /* Timing */
+  --t-fast:       0.25s;
+  --t-mid:        0.5s;
+  --t-slow:       0.85s;
+  --t-cinematic:  1.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Envelope dimensions */
+  --env-w: 320px;
+  --env-h: 210px;
+  --env-flap-h: 115px;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--f-body);
+  background: var(--c-night);
+  color: var(--c-white-warm);
+}
+
+/* ── Screen base ─────────────────────────────────────────────── */
+.screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .is-active is a semantic state marker (no extra visual property needed) */
+
+/* ── SCREEN 1 – INTRO ────────────────────────────────────────── */
+.screen-intro {
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    var(--c-deep-purple) 0%,
+    var(--c-night) 55%,
+    var(--c-midnight) 100%
+  );
+  flex-direction: column;
+  gap: 2.5rem;
+  z-index: 10;
+}
+
+/* Floating particles container */
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Radial glow behind the button */
+.intro-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--c-rose-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.intro-message {
+  font-family: var(--f-display);
+  font-size: clamp(1.3rem, 4vw, 2.2rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--c-white-warm);
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 20px rgba(232, 160, 176, 0.4);
+  animation: fadeSlideDown 1s ease both;
+}
+
+/* ── Heart Button ────────────────────────────────────────────── */
+.heart-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  animation: fadeSlideUp 1s 0.4s ease both;
+  transition: transform var(--t-fast) ease;
+}
+
+.heart-btn:focus-visible .heart-btn-svg {
+  filter: drop-shadow(0 0 12px var(--c-rose-light));
+}
+
+.heart-btn-svg {
+  width: 90px;
+  height: 82px;
+  fill: var(--c-rose);
+  filter: drop-shadow(0 0 14px var(--c-rose-glow));
+  animation: heartPulse 2s ease-in-out infinite;
+  transition: transform var(--t-fast) ease, filter var(--t-fast) ease;
+}
+
+.heart-btn:hover .heart-btn-svg,
+.heart-btn:focus-visible .heart-btn-svg {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 22px var(--c-rose-light));
+  animation-play-state: paused;
+}
+
+.heart-btn-label {
+  font-family: var(--f-display);
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-rose-light);
+  text-shadow: 0 1px 10px var(--c-rose-glow);
+}
+
+/* ── TRANSITION OVERLAY ──────────────────────────────────────── */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-night);
+  /* opacity managed via inline styles for smooth JS-driven transitions */
+}
+
+/* Expanding heart */
+.tx-heart {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tx-heart svg {
+  width: 90px;
+  height: 82px;
+  fill: var(--c-rose);
+  filter: drop-shadow(0 0 18px var(--c-rose-glow));
+}
+
+.tx-heart.is-expanding svg {
+  animation: heartExpand 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ── Envelope ────────────────────────────────────────────────── */
+.envelope-wrapper {
+  position: relative;
+  width: var(--env-w);
+  height: var(--env-h);
+  perspective: 900px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.envelope-wrapper.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.85);
+}
+
+.envelope-wrapper.is-visible {
+  opacity: 1;
+  transform: scale(1);
+  animation: envelopePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.envelope {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Envelope body */
+.env-body {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--c-cream-warm) 0%, var(--c-cream) 100%);
+  border-radius: 4px 4px 8px 8px;
+  overflow: hidden;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Diagonal fold lines */
+.env-fold-left,
+.env-fold-right {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-bottom: calc(var(--env-h) * 0.55) solid rgba(200, 170, 130, 0.25);
+  pointer-events: none;
+}
+
+.env-fold-left {
+  left: 0;
+  border-right: calc(var(--env-w) / 2) solid transparent;
+}
+
+.env-fold-right {
+  right: 0;
+  border-left: calc(var(--env-w) / 2) solid transparent;
+}
+
+/* Letter peeking inside envelope */
+.letter-inside {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 12px;
+  height: 60%;
+  background: linear-gradient(180deg, var(--c-white-warm) 0%, var(--c-cream) 100%);
+  border-radius: 3px 3px 0 0;
+  padding: 14px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(0);
+  transition: transform 0.9s cubic-bezier(0.34, 1.1, 0.64, 1);
+}
+
+.letter-inside.is-rising {
+  transform: translateY(-72%);
+}
+
+.li-line {
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-gold) 0%, transparent 100%);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.li-line--short {
+  width: 55%;
+}
+
+/* Envelope flap */
+.env-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--env-flap-h);
+  background: linear-gradient(180deg, #e8d8c0 0%, #d4c0a0 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0%;
+  transform: rotateX(0deg);
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.envelope.is-open .env-flap {
+  transform: perspective(900px) rotateX(-180deg);
+}
+
+/* ── SCREEN 2 – LETTER ───────────────────────────────────────── */
+.screen-letter {
+  background: var(--c-deep-purple);
+  z-index: 5;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* --- Dynamic background scene --- */
+.bg-scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-gradient-anim {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 30% 40%,
+    #2a0a3e 0%,
+    var(--c-night) 50%,
+    var(--c-midnight) 100%
+  );
+  animation: bgShift 12s ease-in-out infinite alternate;
+}
+
+.bg-particles,
+.effects-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* --- Letter paper --- */
+.letter-wrapper {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem 5rem;
+  overflow: hidden;
+}
+
+.letter-paper {
+  background: linear-gradient(150deg, var(--c-cream-warm) 0%, var(--c-cream) 100%);
+  border-radius: 12px;
+  width: min(620px, 100%);
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  padding: 3rem 3.5rem;
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(212, 175, 122, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-gold) transparent;
+  animation: letterUnfold 0.8s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+  outline: none;
+}
+
+.letter-paper::-webkit-scrollbar { width: 5px; }
+.letter-paper::-webkit-scrollbar-track { background: transparent; }
+.letter-paper::-webkit-scrollbar-thumb {
+  background: var(--c-gold);
+  border-radius: 4px;
+}
+
+/* Letter content typography */
+.letter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.letter-title {
+  font-family: var(--f-display);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-style: italic;
+  color: var(--c-text-dark);
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.letter-date {
+  font-family: var(--f-letter);
+  font-size: 0.95rem;
+  color: var(--c-gold);
+  text-align: right;
+  letter-spacing: 0.08em;
+}
+
+.letter-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+  opacity: 0.5;
+  margin: 0.25rem 0;
+}
+
+.letter-greeting {
+  font-family: var(--f-letter);
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  color: var(--c-text-dark);
+  font-weight: 600;
+}
+
+.letter-paragraph {
+  font-family: var(--f-letter);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  line-height: 1.75;
+  color: var(--c-text-mid);
+}
+
+.letter-closing {
+  font-family: var(--f-letter);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  color: var(--c-text-dark);
+  margin-top: 0.5rem;
+}
+
+.letter-signature {
+  font-family: var(--f-letter);
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+  color: var(--c-text-dark);
+  font-weight: 700;
+  text-align: right;
+  padding-top: 0.5rem;
+}
+
+/* ── Controls ────────────────────────────────────────────────── */
+.controls {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.ctrl-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(13, 8, 21, 0.65);
+  backdrop-filter: blur(8px);
+  color: var(--c-white-warm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition:
+    background var(--t-fast) ease,
+    border-color var(--t-fast) ease,
+    transform var(--t-fast) ease;
+  outline: none;
+}
+
+.ctrl-btn:hover {
+  background: rgba(232, 160, 176, 0.25);
+  border-color: var(--c-rose-light);
+  transform: scale(1.08);
+}
+
+.ctrl-btn:focus-visible {
+  outline: 2px solid var(--c-rose-light);
+  outline-offset: 3px;
+}
+
+.ctrl-icon {
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Audio notice ─────────────────────────────────────────────── */
+.audio-notice {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
+  background: rgba(13, 8, 21, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(212, 175, 122, 0.3);
+  color: var(--c-gold-soft);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.audio-notice code {
+  font-family: monospace;
+  color: var(--c-rose-light);
+}
+
+.audio-notice.is-hidden {
+  display: none;
+}
+
+/* ── Particle dots ────────────────────────────────────────────── */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* ── Effect elements (hearts, stars, flowers) ─────────────────── */
+.effect-item {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+  user-select: none;
+  font-style: normal;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .letter-paper {
+    padding: 2rem 1.75rem;
+    border-radius: 8px;
+  }
+
+  :root {
+    --env-w: 270px;
+    --env-h: 178px;
+    --env-flap-h: 97px;
+  }
+
+  .heart-btn-svg {
+    width: 75px;
+    height: 68px;
+  }
+
+  .controls {
+    bottom: 1rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+
+  .ctrl-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .intro-message {
+    font-size: 1.1rem;
+  }
+}
+
+/* ── Utility ─────────────────────────────────────────────────── */
+.is-hidden {
+  display: none !important;
+}
