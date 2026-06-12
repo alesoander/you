@@ -4,7 +4,7 @@
  */
 const letterData = {
   title: "Para ti",
-  date: "Con amor eterno",
+  date: "12 de junio de 2026",
   greeting: "Hola, gatita cómo estas?,",
   paragraphs: [
     "Quiero decirte que, incluso cuando no estás conmigo, sigo sintiéndote presente, como desde el primer día. Cada aliento, cada suspiro, cada paseo por la playa permanece en mí. Vivimos tanto en tan poco tiempo que cada recuerdo se ha vuelto parte de quien soy.",
