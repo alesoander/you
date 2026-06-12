@@ -6,7 +6,10 @@
 class AudioEngine {
   /**
    * @param {HTMLAudioElement} audioElement
-   * @param {function} onMissingFile – called when the audio file cannot load
+   * @param {function}         onMissingFile
+   *   Callback invoked when the audio source cannot be loaded (e.g. the file
+   *   is absent from assets/audio/ or a network error prevents fetching it).
+   *   Use this to display a user-visible notice rather than silently failing.
    */
   constructor(audioElement, onMissingFile) {
     this.audio = audioElement;

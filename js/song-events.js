@@ -58,14 +58,19 @@ class SongEventEngine {
   /**
    * @param {AudioEngine}     audioEngine
    * @param {AnimationEngine} animationEngine
+   * @param {object}          [options]
+   * @param {number}          [options.tolerance=0.5]
+   *   Window in seconds after each event's `time` within which the event
+   *   is considered active. Increase for slower `timeupdate` intervals or
+   *   to compensate for playback seek granularity.
    */
-  constructor(audioEngine, animationEngine) {
+  constructor(audioEngine, animationEngine, { tolerance = 0.5 } = {}) {
     this.audio      = audioEngine;
     this.animations = animationEngine;
     this.events     = songEvents;
     this._fired     = new Set();
     this._started   = false;
-    this._tolerance = 0.5; // seconds – fire window around each event time
+    this._tolerance = tolerance;
   }
 
   /** Start listening and dispatching events. */
