@@ -5,20 +5,20 @@
 const letterData = {
   title: "Para ti",
   date: "Con amor eterno",
-  greeting: "Mi amor,",
+  greeting: "Hola, gatita cómo estas?,",
   paragraphs: [
-    "Han pasado tantos días desde que llegaste a mi vida, y cada uno de ellos lo recuerdo con una sonrisa que no puedo evitar. Eres la persona que hace que todo tenga sentido.",
+    "Quiero decirte que, incluso cuando no estás conmigo, sigo sintiéndote presente, como desde el primer día. Cada aliento, cada suspiro, cada paseo por la playa permanece en mí. Vivimos tanto en tan poco tiempo que cada recuerdo se ha vuelto parte de quien soy.",
 
-    "Quiero que sepas cuánto me alegra tenerte. Cada momento contigo es un regalo que atesoro en el lugar más profundo de mi corazón. Tu risa, tu mirada, tu manera única de ver el mundo… todo en ti me enamora cada día más.",
+    "No dejo de extrañarte cuando estás lejos. Me gustaría construir una vida en la que pudiéramos compartir más momentos, más tiempo, más experiencias juntos.",
 
-    "No siempre soy bueno con las palabras, pero hoy quiero intentarlo. Quiero que sepas que eres extraordinaria. Que cuando estoy contigo el tiempo se detiene y todo lo demás deja de importar.",
+    "A lo largo de mi vida he aprendido muchas cosas, pero amarte no es una de ellas. No es algo que haya tenido que aprender ni forzar. Es un sentimiento que simplemente existe. No nace de una obligación ni de una necesidad; es algo natural, espontáneo, y precisamente por eso me gusta tanto.",
 
-    "Gracias por ser quien eres. Gracias por dejarme estar a tu lado. Gracias por hacer de cada día algo especial, incluso cuando crees que no lo es.",
+    "Quiero ser claro: esto no pretende ser una declaración de amor ni una petición. Es simplemente una forma honesta de expresarte cómo me siento cuando pienso en ti. Y, si soy sincero, me gustaría que tú sintieras algo parecido.",
 
     "Esta carta es solo una pequeña muestra de todo lo que siento y de todo lo que desearía poder decirte. Hay tanto más que va más allá de las palabras.",
 
     "Solo quiero que sepas que te quiero. Profundamente. Con todo."
   ],
   closing: "Con todo mi amor,",
-  signature: "Tuyo para siempre ❤️"
+  signature: "Te amo. ❤️"
 };
